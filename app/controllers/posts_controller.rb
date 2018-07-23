@@ -5,12 +5,17 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @post = Post.find_by(id: params[:id])
   end
 
   def update
-    @post.update(post_params)
-
-    redirect_to post_path(@post)
+    @post_validation = Post.new(post_params)
+    if @post_validation.valid?
+      @post.update(post_params)
+      redirect_to post_path(@post)
+    else
+      render(:edit)
+    end
   end
 
   private
